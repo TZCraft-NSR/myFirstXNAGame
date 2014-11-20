@@ -8,21 +8,26 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using VoidEngine;
 
 namespace myFirstXNAGame
 {
     /// <summary>
-    /// This is the main type for your game
+    /// This is the myFirstXNAGame class
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class myFirstXNAGame : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Sprite sprite1;
+        List<Sprite> spriteList;
 
         Texture2D texture;
+        Texture2D texturePlayer;
+        Texture2D texturePaddle;
+        Texture2D texturePong;
+        Random rng;
 
-        public Game1()
+        public myFirstXNAGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -36,7 +41,10 @@ namespace myFirstXNAGame
         /// </summary>
         protected override void Initialize()
         {
+            IsMouseVisible = true;
+            rng = new Random();
             // TODO: Add your initialization logic here
+            spriteList = new List<Sprite>();
 
             base.Initialize();
         }
@@ -51,7 +59,18 @@ namespace myFirstXNAGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             texture = Content.Load<Texture2D>(@"Images\player");
-            sprite1 = new Sprite(texture, new Vector2(100, 100), 60, 50, 5, 6, 16);
+            texturePlayer = Content.Load<Texture2D>(@"Images\john");
+            texturePaddle = Content.Load<Texture2D>(@"Images\paddle");
+            texturePong = Content.Load<Texture2D>(@"Images\pong");
+            for (int i = 0; i < 1; i++)
+            {
+                //spriteList.Add(new OneAnimation(texture, new Vector2(rng.Next(600), rng.Next(600)), 60, 50, 5, 6, 16, 1, Keys.W, Keys.S, Keys.A, Keys.D));
+                spriteList.Add(new OneAnimation(texture, new Vector2(rng.Next(600), rng.Next(600)), 60, 50, 5, 6, 16));
+            }
+
+            spriteList.Add(new PaddleLeft(texturePaddle, new Vector2(100, 100), 12, 50, 1, 1, 0, Keys.W, Keys.S));
+            spriteList.Add(new PaddleRight(texturePaddle, new Vector2(300 - 24, 100), 12, 50, 1, 1, 0, Keys.None, Keys.None));
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -77,7 +96,10 @@ namespace myFirstXNAGame
                 this.Exit();
             }
 
-            sprite1.Update(gameTime);
+            foreach (Sprite s in spriteList)
+            {
+                s.Update(gameTime);
+            }
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -92,9 +114,10 @@ namespace myFirstXNAGame
             GraphicsDevice.Clear(new Color(124, 198, 255));
 
             spriteBatch.Begin();
-                sprite1.Draw(gameTime, spriteBatch);
-                // This is an old fuction.
-                //spriteBatch.Draw(texture, new Vector2(50, 50), Color.White);
+                foreach (Sprite s in spriteList)
+                {
+                    s.Draw(gameTime, spriteBatch);
+                }
             spriteBatch.End();
             // TODO: Add your drawing code here
 
