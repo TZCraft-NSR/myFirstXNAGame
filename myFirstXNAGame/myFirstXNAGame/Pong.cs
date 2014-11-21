@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,8 +22,8 @@ namespace myFirstXNAGame
             texture = tex;
             position = pos;
 
-            frameSize = new Point(60, 50);
-            sheetSize = new Point(5, 6);
+            frameSize = new Point(40, 40);
+            sheetSize = new Point(1, 1);
             fTime = 16;
         }
 

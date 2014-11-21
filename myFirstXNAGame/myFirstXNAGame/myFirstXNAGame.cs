@@ -21,16 +21,31 @@ namespace myFirstXNAGame
         SpriteBatch spriteBatch;
         List<Sprite> spriteList;
 
+        Sprite paddleLeft;
+        Sprite paddleRight;
+        Sprite pong;
+
         Texture2D texture;
         Texture2D texturePlayer;
         Texture2D texturePaddle;
         Texture2D texturePong;
+        Texture2D bgTexture;
         Random rng;
+
+        int screenWidth;
+        int screenHeight;
+        int calcEnd;
+        int calcEnd2;
+        int calcEnd3;
+        int calcEnd4;
 
         public myFirstXNAGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferHeight = 480;
+            graphics.PreferredBackBufferWidth = 640;
         }
 
         /// <summary>
@@ -62,15 +77,22 @@ namespace myFirstXNAGame
             texturePlayer = Content.Load<Texture2D>(@"Images\john");
             texturePaddle = Content.Load<Texture2D>(@"Images\paddle");
             texturePong = Content.Load<Texture2D>(@"Images\pong");
+            bgTexture = Content.Load<Texture2D>(@"Images\background");
             for (int i = 0; i < 1; i++)
             {
                 //spriteList.Add(new OneAnimation(texture, new Vector2(rng.Next(600), rng.Next(600)), 60, 50, 5, 6, 16, 1, Keys.W, Keys.S, Keys.A, Keys.D));
                 spriteList.Add(new OneAnimation(texture, new Vector2(rng.Next(600), rng.Next(600)), 60, 50, 5, 6, 16));
             }
 
-            spriteList.Add(new PaddleLeft(texturePaddle, new Vector2(100, 100), 12, 50, 1, 1, 0, Keys.W, Keys.S));
-            spriteList.Add(new PaddleRight(texturePaddle, new Vector2(300 - 24, 100), 12, 50, 1, 1, 0, Keys.None, Keys.None));
+            screenWidth = graphics.PreferredBackBufferWidth;
+            calcEnd = screenWidth - 75;
+            calcEnd2 = (screenWidth - 40) / 2;
+            calcEnd3 = (screenHeight * 2) + 40;
+            calcEnd4 = (screenHeight + 100) / 2;
 
+            paddleLeft = new PaddleLeft(texturePaddle, new Vector2(75, calcEnd4), 50, 100, 1, 1, 0, Keys.W, Keys.S);
+            paddleRight = new PaddleRight(texturePaddle, new Vector2(calcEnd - 50, calcEnd4), 50, 100, 1, 1, 0, Keys.None, Keys.None);
+            pong = new Pong(texturePong, new Vector2(calcEnd2, calcEnd3), 40, 40, 1, 1, 16);
             // TODO: use this.Content to load your game content here
         }
 
@@ -100,6 +122,10 @@ namespace myFirstXNAGame
             {
                 s.Update(gameTime);
             }
+
+            paddleLeft.Update(gameTime);
+            paddleRight.Update(gameTime);
+            pong.Update(gameTime);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -111,13 +137,17 @@ namespace myFirstXNAGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(new Color(124, 198, 255));
+            GraphicsDevice.Clear(new Color(50, 50, 50));
 
             spriteBatch.Begin();
+                spriteBatch.Draw(bgTexture, new Rectangle(0, 0, 640, 480), Color.White);
                 foreach (Sprite s in spriteList)
                 {
                     s.Draw(gameTime, spriteBatch);
                 }
+                pong.Draw(gameTime, spriteBatch);
+                paddleLeft.Draw(gameTime, spriteBatch);
+                paddleRight.Draw(gameTime, spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 

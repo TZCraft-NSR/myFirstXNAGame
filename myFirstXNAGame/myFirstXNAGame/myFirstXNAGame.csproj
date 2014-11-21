@@ -125,8 +125,6 @@
     <ProjectReference Include="..\..\..\VoidEngine\VoidEngine\VoidEngine.csproj">
       <Project>{CF9853A6-A986-4FAD-A2E6-6FE5307EDF2F}</Project>
       <Name>VoidEngine</Name>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\myFirstXNAGameContent\myFirstXNAGameContent.contentproj">
       <Name>myFirstXNAGameContent</Name>
