@@ -17,24 +17,8 @@ namespace myFirstXNAGame
     {
         protected bool start = true;
 
-        public Pong(Texture2D tex, Vector2 pos) : base(tex, pos)
+        public Pong(Vector2 position) : base(position)
         {
-            texture = tex;
-            position = pos;
-
-            frameSize = new Point(40, 40);
-            sheetSize = new Point(1, 1);
-            fTime = 16;
-        }
-
-        public Pong(Texture2D tex, Vector2 pos, int frameWidth, int frameHeight, int sheetWidth, int sheetHeight, int fps) : base(tex, pos, frameWidth, frameHeight, sheetWidth, sheetHeight, fps)
-        {
-            texture = tex;
-            position = pos;
-
-            frameSize = new Point(frameWidth, frameHeight);
-            sheetSize = new Point(sheetWidth, sheetHeight);
-            fTime = fps;
         }
 
         public override void Update(GameTime gameTime, Vector2 left, Vector2 right, Vector2 leftSize, Vector2 rightSize)
