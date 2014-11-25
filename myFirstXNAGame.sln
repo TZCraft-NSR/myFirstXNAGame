@@ -1,28 +1,9 @@
 
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myFirstXNAGame", "myFirstXNAGame\myFirstXNAGame\myFirstXNAGame.csproj", "{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myFirstXNAGame", "myFirstXNAGame\myFirstXNAGame\myFirstXNAGame.csproj", "{E6068208-E51E-404D-81A9-224A4C175685}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "myFirstXNAGameContent", "myFirstXNAGame\myFirstXNAGameContent\myFirstXNAGameContent.contentproj", "{02E52EBD-E4F8-4274-849B-B052A5EFE616}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x86 = Debug|x86
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}.Debug|x86.ActiveCfg = Debug|x86
-		{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}.Debug|x86.Build.0 = Debug|x86
-		{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}.Release|x86.ActiveCfg = Release|x86
-		{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}.Release|x86.Build.0 = Release|x86
-		{02E52EBD-E4F8-4274-849B-B052A5EFE616}.Debug|x86.ActiveCfg = Debug|x86
-		{02E52EBD-E4F8-4274-849B-B052A5EFE616}.Release|x86.ActiveCfg = Release|x86
-	EndGlobalSection
-	GlobalSection(SoMicrosoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myFirstXNAGame", "myFirstXNAGame\myFirstXNAGame\myFirstXNAGame.csproj", "{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myFirstXNAGameContent", "myFirstXNAGame\myFirstXNAGameContent\myFirstXNAGameContent.contentproj", "{02E52EBD-E4F8-4274-849B-B052A5EFE616}"
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "myFirstXNAGameContent", "myFirstXNAGame\myFirstXNAGameContent\myFirstXNAGameContent.contentproj", "{929B174C-DDB8-4F9D-8AC0-2A05094FD96A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoidEngine", "..\VoidEngine\VoidEngine\VoidEngine.csproj", "{CF9853A6-A986-4FAD-A2E6-6FE5307EDF2F}"
 EndProject
@@ -32,22 +13,18 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}.Debug|x86.ActiveCfg = Debug|x86
-		{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}.Debug|x86.Build.0 = Debug|x86
-		{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}.Release|x86.ActiveCfg = Release|x86
-		{B53FBB56-8920-4CFA-96AE-B7790D9BCC71}.Release|x86.Build.0 = Release|x86
-		{02E52EBD-E4F8-4274-849B-B052A5EFE616}.Debug|x86.ActiveCfg = Debug|x86
-		{02E52EBD-E4F8-4274-849B-B052A5EFE616}.Release|x86.ActiveCfg = Release|x86
+		{E6068208-E51E-404D-81A9-224A4C175685}.Debug|x86.ActiveCfg = Debug|x86
+		{E6068208-E51E-404D-81A9-224A4C175685}.Debug|x86.Build.0 = Debug|x86
+		{E6068208-E51E-404D-81A9-224A4C175685}.Release|x86.ActiveCfg = Release|x86
+		{E6068208-E51E-404D-81A9-224A4C175685}.Release|x86.Build.0 = Release|x86
+		{929B174C-DDB8-4F9D-8AC0-2A05094FD96A}.Debug|x86.ActiveCfg = Debug|x86
+		{929B174C-DDB8-4F9D-8AC0-2A05094FD96A}.Release|x86.ActiveCfg = Release|x86
 		{CF9853A6-A986-4FAD-A2E6-6FE5307EDF2F}.Debug|x86.ActiveCfg = Debug|x86
 		{CF9853A6-A986-4FAD-A2E6-6FE5307EDF2F}.Debug|x86.Build.0 = Debug|x86
 		{CF9853A6-A986-4FAD-A2E6-6FE5307EDF2F}.Release|x86.ActiveCfg = Release|x86
 		{CF9853A6-A986-4FAD-A2E6-6FE5307EDF2F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-EndGlobal
-lutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
