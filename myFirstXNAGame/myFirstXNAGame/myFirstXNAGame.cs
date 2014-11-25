@@ -23,7 +23,7 @@ namespace myFirstXNAGame
         //Sprite paddleLeft;
         //Sprite paddleRight;
         //Sprite pong;
-        TwoAnimation player;
+        Player player;
 
         Texture2D texturePlayer;
         //Texture2D texturePaddle;
@@ -83,7 +83,7 @@ namespace myFirstXNAGame
             calcEnd3 = (screenHeight * 2) + 40;
             calcEnd4 = (screenHeight + 100) / 2;
 
-            player = new TwoAnimation(new Vector2(100, 100));
+            player = new Player(new Vector2(100, 100), 2, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Q, Keys.E);
 
             player.AddAnimations(texturePlayer);
 
