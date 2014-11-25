@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,30 +15,24 @@ namespace myFirstXNAGame
 {
     public class PaddleRight : Sprite
     {
-        public PaddleRight(Texture2D tex, Vector2 pos, Keys u, Keys d) : base(tex, pos)
+        protected bool move;
+        protected int speed;
+        protected Keys up;
+        protected Keys down;
+        protected Keys left;
+        protected Keys right;
+
+        public PaddleRight(Vector2 position, Keys up, Keys down) : base(position)
         {
-            texture = tex;
-            position = pos;
+            move = true;
 
-            frameSize = new Point(60, 50);
-            sheetSize = new Point(5, 6);
-            fTime = 16;
-
-            up = u;
-            down = d;
+            this.up = up;
+            this.down = down;
         }
 
-        public PaddleRight(Texture2D tex, Vector2 pos, int frameWidth, int frameHeight, int sheetWidth, int sheetHeight, int fps, Keys u, Keys d) : base(tex, pos, frameWidth, frameHeight, sheetWidth, sheetHeight, fps)
+        public PaddleRight(Vector2 position) : base(position)
         {
-            texture = tex;
-            position = pos;
-
-            frameSize = new Point(frameWidth, frameHeight);
-            sheetSize = new Point(sheetWidth, sheetHeight);
-            fTime = fps;
-
-            up = u;
-            down = d;
+            move = false;
         }
 
         public override void Update(GameTime gameTime)
@@ -58,9 +52,9 @@ namespace myFirstXNAGame
                 {
                     position.Y = 0;
                 }
-                if (position.Y >= 480 - frameSize.Y)
+                if (position.Y >= 480 - currentAnimation.frameSize.Y)
                 {
-                    position.Y = 480 - frameSize.Y;
+                    position.Y = 480 - currentAnimation.frameSize.Y;
                 }
             }
 
