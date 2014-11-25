@@ -19,16 +19,15 @@ namespace myFirstXNAGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        List<Sprite> spriteList;
 
-        Sprite paddleLeft;
-        Sprite paddleRight;
-        Sprite pong;
+        //Sprite paddleLeft;
+        //Sprite paddleRight;
+        //Sprite pong;
+        TwoAnimation player;
 
-        Texture2D texture;
         Texture2D texturePlayer;
-        Texture2D texturePaddle;
-        Texture2D texturePong;
+        //Texture2D texturePaddle;
+        //Texture2D texturePong;
         Texture2D bgTexture;
         Random rng;
 
@@ -59,7 +58,6 @@ namespace myFirstXNAGame
             IsMouseVisible = true;
             rng = new Random();
             // TODO: Add your initialization logic here
-            spriteList = new List<Sprite>();
 
             base.Initialize();
         }
@@ -73,26 +71,25 @@ namespace myFirstXNAGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            texture = Content.Load<Texture2D>(@"Images\player");
             texturePlayer = Content.Load<Texture2D>(@"Images\john");
-            texturePaddle = Content.Load<Texture2D>(@"Images\paddle");
-            texturePong = Content.Load<Texture2D>(@"Images\pong");
+            //texturePaddle = Content.Load<Texture2D>(@"Images\paddle");
+            //texturePong = Content.Load<Texture2D>(@"Images\pong");
             bgTexture = Content.Load<Texture2D>(@"Images\background");
-            for (int i = 0; i < 1; i++)
-            {
-                //spriteList.Add(new OneAnimation(texture, new Vector2(rng.Next(600), rng.Next(600)), 60, 50, 5, 6, 16, 1, Keys.W, Keys.S, Keys.A, Keys.D));
-                spriteList.Add(new OneAnimation(texture, new Vector2(rng.Next(600), rng.Next(600)), 60, 50, 5, 6, 16));
-            }
 
             screenWidth = graphics.PreferredBackBufferWidth;
+            screenHeight = graphics.PreferredBackBufferHeight;
             calcEnd = screenWidth - 75;
             calcEnd2 = (screenWidth - 40) / 2;
             calcEnd3 = (screenHeight * 2) + 40;
             calcEnd4 = (screenHeight + 100) / 2;
 
-            paddleLeft = new PaddleLeft(texturePaddle, new Vector2(75, calcEnd4), 50, 100, 1, 1, 0, Keys.W, Keys.S);
-            paddleRight = new PaddleRight(texturePaddle, new Vector2(calcEnd - 50, calcEnd4), 50, 100, 1, 1, 0, Keys.None, Keys.None);
-            pong = new Pong(texturePong, new Vector2(calcEnd2, calcEnd3), 40, 40, 1, 1, 16);
+            player = new TwoAnimation(new Vector2(100, 100));
+
+            player.AddAnimations(texturePlayer);
+
+            //paddleLeft = new PaddleLeft(texturePaddle, new Vector2(75, calcEnd4), 50, 100, 1, 1, 0, Keys.W, Keys.S);
+            //paddleRight = new PaddleRight(texturePaddle, new Vector2(calcEnd - 50, calcEnd4), 50, 100, 1, 1, 0, Keys.None, Keys.None);
+            //pong = new Pong(texturePong, new Vector2(calcEnd2, calcEnd3), 40, 40, 1, 1, 16);
             // TODO: use this.Content to load your game content here
         }
 
@@ -118,14 +115,11 @@ namespace myFirstXNAGame
                 this.Exit();
             }
 
-            foreach (Sprite s in spriteList)
-            {
-                s.Update(gameTime);
-            }
+            player.Update(gameTime);
 
-            paddleLeft.Update(gameTime);
-            paddleRight.Update(gameTime);
-            pong.Update(gameTime);
+            //paddleLeft.Update(gameTime);
+            //paddleRight.Update(gameTime);
+            //pong.Update(gameTime);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -141,13 +135,10 @@ namespace myFirstXNAGame
 
             spriteBatch.Begin();
                 spriteBatch.Draw(bgTexture, new Rectangle(0, 0, 640, 480), Color.White);
-                foreach (Sprite s in spriteList)
-                {
-                    s.Draw(gameTime, spriteBatch);
-                }
-                pong.Draw(gameTime, spriteBatch);
-                paddleLeft.Draw(gameTime, spriteBatch);
-                paddleRight.Draw(gameTime, spriteBatch);
+                //pong.Draw(gameTime, spriteBatch);
+                //paddleLeft.Draw(gameTime, spriteBatch);
+                //paddleRight.Draw(gameTime, spriteBatch);
+                player.Draw(gameTime, spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 
