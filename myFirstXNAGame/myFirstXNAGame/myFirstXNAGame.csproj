@@ -113,6 +113,7 @@
     <Compile Include="myFirstXNAGame.cs" />
     <Compile Include="PaddleLeft.cs" />
     <Compile Include="PaddleRight.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Pong.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
