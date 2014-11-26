@@ -23,6 +23,10 @@ namespace myFirstXNAGame
         protected Keys right;
         protected Keys attack;
         protected Keys shoot;
+        protected Vector2 vi = new Vector2(0, 0);
+        protected bool IsJumping;
+        protected readonly Vector2 g = new Vector2(0, -9.8f);
+        public Label debug;
 
         public Player(Vector2 position, int speed, Keys up, Keys down, Keys left, Keys right, Keys attack, Keys shoot) : base(position)
         {
@@ -39,13 +43,18 @@ namespace myFirstXNAGame
             this.shoot = shoot;
         }
 
+        public void drawDebug(SpriteFont texture)
+        {
+            debug = new Label(new Vector2(200, 25), texture, "Position: " + position.Y.ToString());
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (move == true)
             {
                 if (keyboardState.IsKeyDown(up))
                 {
-                    position.Y -= speed;
+                    IsJumping = true;
                 }
                 if (keyboardState.IsKeyDown(left))
                 {
@@ -53,7 +62,8 @@ namespace myFirstXNAGame
                 }
                 if (keyboardState.IsKeyDown(down))
                 {
-                    position.Y += speed;
+                    IsJumping = false;
+                    //position.Y += speed;
                 }
                 if (keyboardState.IsKeyDown(right))
                 {
@@ -64,7 +74,7 @@ namespace myFirstXNAGame
                 {
                     position.Y = 0;
                 }
-                if (position.Y >= 480 - currentAnimation.frameSize.Y)
+                if (position.Y >= 480)
                 {
                     position.Y = 480 - currentAnimation.frameSize.Y;
                 }
@@ -75,6 +85,38 @@ namespace myFirstXNAGame
                 if (position.X >= 480 - currentAnimation.frameSize.X)
                 {
                     position.X = 480 - currentAnimation.frameSize.X;
+                }
+
+                if (IsJumping == true)
+                {
+                    if (position.Y < 10)
+                    {
+                        vi.Y += g.Y; //* gameTime.ElapsedGameTime.Milliseconds;
+                        position.Y += (float)vi.Y; //* gameTime.ElapsedGameTime.Milliseconds;
+                    }
+                    else if (position.Y >= 10)
+                    {
+                        IsJumping = false;
+                        vi.Y -= g.Y; //* gameTime.ElapsedGameTime.Milliseconds;
+                        position.Y -= (float)vi.Y; //* gameTime.ElapsedGameTime.Milliseconds;
+                    }
+                }
+                else if (IsJumping == false)
+                {
+                    //if (position.Y > 0)
+                    //{
+                    //    vi.Y -= g.Y; //* gameTime.ElapsedGameTime.Milliseconds;
+                    //    position.Y -= (float)vi.Y; //* gameTime.ElapsedGameTime.Milliseconds;
+                    //}
+                    if (position.Y >= 430)
+                    {
+                        vi.Y = 0;
+                    }
+
+                    if (position.Y > 480)
+                    {
+                        position.Y = 0;
+                    }
                 }
             }
 
@@ -113,11 +155,14 @@ namespace myFirstXNAGame
                 SetAnimation("IDLE");
             }
 
+            debug.Update(gameTime, "Position: " + position.Y.ToString() + " Vi: " + vi.Y.ToString());
+
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            debug.Draw(gameTime, spriteBatch);
             base.Draw(gameTime, spriteBatch);
         }
 
