@@ -16,38 +16,58 @@ namespace myFirstXNAGame
     public class PaddleLeft : Sprite
     {
         protected bool move;
-        protected int speed;
         protected Keys up;
         protected Keys down;
-        protected Keys left;
-        protected Keys right;
 
-        public PaddleLeft(Vector2 position, Keys up, Keys down) : base(position)
+        protected Vector2 direction;
+        protected myFirstXNAGame myGame;
+
+        public PaddleLeft(Texture2D texture, Vector2 position, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
         {
-            move = true;
+            AddAnimations(texture);
+
+            if (up == Keys.None && up == Keys.None)
+            {
+                move = false;
+            }
+            else
+            {
+                move = true;
+            }
+
+            speed = 2;
 
             this.up = up;
             this.down = down;
+
+            this.position = position;
+            this.myGame = myGame;
+
+            direction.X = (0);
+            direction.Y = (0);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (keyboardState.IsKeyDown(up))
+            if (move == true)
             {
-                position.Y -= 2;
-            }
-            if (keyboardState.IsKeyDown(down))
-            {
-                position.Y += 2;
+                if (keyboardState.IsKeyDown(up))
+                {
+                    position.Y -= speed;
+                }
+                if (keyboardState.IsKeyDown(down))
+                {
+                    position.Y += speed;
+                }
             }
 
-            if (position.Y <= 0)
+            if (position.Y < 100)
             {
-                position.Y = 0;
+                position.Y = 100;
             }
-            if (position.Y >= 480 - currentAnimation.frameSize.Y)
+            if (position.Y > myGame.windowSize.Y - currentAnimation.frameSize.Y)
             {
-                position.Y = 480 - currentAnimation.frameSize.Y;
+                position.Y = myGame.windowSize.Y - currentAnimation.frameSize.Y;
             }
 
             base.Update(gameTime);
@@ -56,6 +76,13 @@ namespace myFirstXNAGame
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
+        }
+
+        public override void AddAnimations(Texture2D texture)
+        {
+            Addanimation("IDLE", texture, new Point(50, 100), new Point(0, 0), new Point(0, 0), 1000);
+            SetAnimation("IDLE");
+            base.AddAnimations(texture);
         }
     }
 }
