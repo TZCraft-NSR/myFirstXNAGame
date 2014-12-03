@@ -16,7 +16,6 @@ namespace myFirstXNAGame
     class Player : TwoAnimation
     {
         protected bool move;
-        protected int speed;
         protected Keys up;
         protected Keys down;
         protected Keys left;
