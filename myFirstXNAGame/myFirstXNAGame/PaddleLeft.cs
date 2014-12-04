@@ -19,7 +19,6 @@ namespace myFirstXNAGame
         protected Keys up;
         protected Keys down;
 
-        protected Vector2 direction;
         protected myFirstXNAGame myGame;
 
         public PaddleLeft(Texture2D texture, Vector2 position, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
