@@ -16,10 +16,10 @@ namespace myFirstXNAGame
     public class PaddleRight : Sprite
     {
         protected bool move;
+        protected bool moveAi;
         protected Keys up;
         protected Keys down;
 
-        protected Vector2 direction;
         protected myFirstXNAGame myGame;
 
         public PaddleRight(Texture2D texture, Vector2 position, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
@@ -40,11 +40,9 @@ namespace myFirstXNAGame
             this.up = up;
             this.down = down;
 
-            this.position = position;
             this.myGame = myGame;
 
-            direction.X = (0);
-            direction.Y = (0);
+            direction = Vector2.Zero;
         }
 
         public override void Update(GameTime gameTime)
@@ -59,6 +57,31 @@ namespace myFirstXNAGame
                 {
                     position.Y += speed;
                 }
+            }
+            else
+            {
+                if (keyboardState.IsKeyDown(Keys.Space) && moveAi == false)
+                {
+                    moveAi = true;
+                }
+
+                if (moveAi == true)
+                {
+                    if (myGame.pongPosition.Y + 20 < position.Y + 50)
+                    {
+                        direction.Y = -1;
+                    }
+                    else if (myGame.pongPosition.Y + 20 > position.Y + 50)
+                    {
+                        direction.Y = 1;
+                    }
+                    else
+                    {
+                        position.Y = 0;
+                    }
+                }
+
+                position += direction * speed;
             }
 
             if (position.Y < 100)
