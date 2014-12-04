@@ -19,7 +19,7 @@ namespace myFirstXNAGame
     class Pong : Sprite
     {
         myFirstXNAGame myGame;
-        Vector2 direction;
+        bool move;
 
         /// <summary>
         /// Creates the Pong from the class.
@@ -28,8 +28,7 @@ namespace myFirstXNAGame
         public Pong(Texture2D texture, Vector2 position, myFirstXNAGame myGame) : base(position)
         {
             AddAnimations(texture);
-            speed = 2;
-            this.position = position;
+            speed = 3;
             this.myGame = myGame;
 
             direction.X = (2 * (float)myGame.rng.NextDouble() - 1);
@@ -43,47 +42,35 @@ namespace myFirstXNAGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if (keyboardState.IsKeyDown(Keys.W))
+            //direction = Collision.unitVector(direction);
+            if (keyboardState.IsKeyDown(Keys.Space) && move == false)
             {
-                position.Y -= speed;
-            }
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
-                position.X -= speed;
-            }
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
-                position.Y += speed;
-            }
-            if (keyboardState.IsKeyDown(Keys.D))
-            {
-                position.X += speed;
+                move = true;
             }
 
-            direction = Collision.UnitVector(direction);
-
-            direction.X = direction.X * speed;
-            direction.Y = direction.Y * speed;
-
-            foreach (Collision.MapSegment ms in myGame.MapSegments)
+            if (move == true)
             {
-                if (collisionRect().Intersects(ms.collisionRect()))
+                position.X += direction.X * speed;
+                position.Y += direction.Y * speed;
+
+                foreach (Collision.MapSegment ms in myGame.MapSegments)
                 {
-                    speed = 0;
+                    if (collisionRect().Intersects(ms.collisionRect()))
+                    {
+                        direction = Collision.reflectedVector(direction, ms.getVector());
+                        speed *= 1.01f;
+                        if (speed > 30)
+                        {
+                            speed = 30;
+                        }
+                        position += direction * speed;
+                    }
                 }
+
+                myGame.pongPosition = position;
             }
 
             base.Update(gameTime);
-        }
-
-        /// <summary>
-        /// Put inbetween the spriteBatch.Begin and spriteBatch.End
-        /// </summary>
-        /// <param name="gameTime">The main GameTime</param>
-        /// <param name="spriteBatch">The main SpriteBatch</param>
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            base.Draw(gameTime, spriteBatch);
         }
 
         public override void AddAnimations(Texture2D texture)
