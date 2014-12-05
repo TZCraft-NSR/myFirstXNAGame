@@ -37,6 +37,8 @@ namespace myFirstXNAGame
 
         public Point windowSize;
 
+        MouseState current_mouse = Mouse.GetState();
+
         public myFirstXNAGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -94,7 +96,10 @@ namespace myFirstXNAGame
             spriteList.Add(new PaddleLeft(texturePaddle, new Vector2(25, (windowSize.Y - texturePaddle.Height) / 2), this, Keys.W, Keys.S));
             spriteList.Add(new PaddleRight(texturePaddle, new Vector2((windowSize.X - 75), (windowSize.Y - texturePaddle.Height) / 2), this, Keys.None, Keys.None));
             spriteList.Add(new Pong(texturePong, new Vector2((windowSize.X - texturePong.Width) / 2, ((windowSize.Y - 100 - texturePong.Height) / 2) + 100), this));
-            label1 = new Label(new Vector2(5, 5), font1, spriteList[2].direction.X.ToString() + " " + spriteList[2].direction.Y.ToString() + " " + spriteList[2].speed.ToString() + " " + spriteList[2].position.X.ToString() + " " + spriteList[2].position.Y.ToString());
+            label1 = new Label(new Vector2(5, 5), font1, spriteList[2].direction.X.ToString() + " " + spriteList[2].direction.Y.ToString() + " " + spriteList[2].speed.ToString() + " " + spriteList[2].position.X.ToString() + " " + spriteList[2].position.Y.ToString() + " " + (spriteList[1].position.X - spriteList[1].currentAnimation.frameSize.X) + " " + spriteList[1].position.Y + spriteList[1].currentAnimation.frameSize.Y);
+
+            MapSegments.Add(new Collision.MapSegment(new Point((int)spriteList[0].position.X, (int)spriteList[0].position.Y), new Point((int)spriteList[0].currentAnimation.frameSize.X, (int)spriteList[0].currentAnimation.frameSize.Y)));
+            MapSegments.Add(new Collision.MapSegment(new Point((int)spriteList[1].position.X, (int)spriteList[1].position.Y), new Point((int)spriteList[1].currentAnimation.frameSize.X, (int)spriteList[1].currentAnimation.frameSize.Y)));
             // TODO: use this.Content to load your game content here
         }
 
@@ -124,7 +129,10 @@ namespace myFirstXNAGame
             {
                 s.Update(gameTime);
             }
-            label1.Update(gameTime, spriteList[2].direction.X.ToString() + " " + spriteList[2].direction.Y.ToString() + " " + spriteList[2].speed.ToString() + " " + spriteList[2].position.X.ToString() + " " + spriteList[2].position.Y.ToString());
+            label1.Update(gameTime, spriteList[2].direction.X.ToString() + " " + spriteList[2].direction.Y.ToString() + " " + spriteList[2].speed.ToString() + " " + spriteList[2].position.X.ToString() + " " + spriteList[2].position.Y.ToString() + " " + MapSegments[6].point1.X + " " + MapSegments[6].point1.Y + " " + MapSegments[6].point2.X + " " + MapSegments[6].point2.Y + " " + MapSegments[7].point1.X + " " + MapSegments[7].point1.Y + " " + MapSegments[7].point2.X + " " + MapSegments[7].point2.Y);
+
+            MapSegments[6] = new Collision.MapSegment(new Point((int)spriteList[0].position.X, (int)spriteList[0].position.Y), new Point((int)spriteList[0].position.X + (int)spriteList[0].currentAnimation.frameSize.X, (int)spriteList[0].position.Y + (int)spriteList[0].currentAnimation.frameSize.Y));
+            MapSegments[7] = new Collision.MapSegment(new Point((int)spriteList[1].position.X, (int)spriteList[1].position.Y), new Point((int)spriteList[1].position.X + (int)spriteList[1].currentAnimation.frameSize.X, (int)spriteList[1].position.Y + (int)spriteList[1].currentAnimation.frameSize.Y));
             // TODO: Add your update logic here
 
             base.Update(gameTime);
