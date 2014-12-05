@@ -59,12 +59,40 @@ namespace myFirstXNAGame
                     {
                         direction = Collision.reflectedVector(direction, ms.getVector());
                         speed *= 1.01f;
+
                         if (speed > 30)
                         {
-                            speed = 30;
+                            speed = 25;
                         }
+
                         position += direction * speed;
                     }
+                }
+
+                if (collisionRect().Intersects(myGame.MapSegments[6].collisionRect()))
+                {
+                    direction = Collision.reflectedVector(direction, myGame.MapSegments[6].getVector());
+                    speed *= 1.01f;
+
+                    if (speed > 30)
+                    {
+                        speed = 25;
+                    }
+
+                    position += direction * speed;
+                }
+
+                if (collisionRect().Intersects(myGame.MapSegments[7].collisionRect()))
+                {
+                    direction = Collision.reflectedVector(direction, myGame.MapSegments[7].getVector());
+                    speed *= 1.01f;
+
+                    if (speed > 30)
+                    {
+                        speed = 25;
+                    }
+
+                    position += direction * speed;
                 }
 
                 myGame.pongPosition = position;
