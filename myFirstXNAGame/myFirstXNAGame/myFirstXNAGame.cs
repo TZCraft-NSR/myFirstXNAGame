@@ -18,21 +18,40 @@ namespace myFirstXNAGame
     public class myFirstXNAGame : Microsoft.Xna.Framework.Game
     {
         public GraphicsDeviceManager graphics;
+
         SpriteBatch spriteBatch;
-
         public List<Sprite> spriteList;
+        Player player;
+        Label debugLabel;
+        Label score;
+        Label endText;
+        Button resetButton;
+        Button playButton;
+        Button exitButton;
+        Button optionsButton;
 
-        SpriteFont font1;
-
-        //Texture2D texturePlayer;
+        Texture2D texturePlayer;
         Texture2D texturePaddle;
         Texture2D texturePong;
         Texture2D bgTexture;
-        Label label1;
+        Texture2D buttonTexture;
+        SpriteFont arial;
+        SpriteFont arialBold;
+
+        public int scoreRight;
+        public int scoreLeft;
+
+        public bool gameOver = false;
+        public bool playerWon = false;
+        public bool ableStart = true;
+
+        public int menu = 0;
 
         public Random rng;
 
         public List<Collision.MapSegment> MapSegments;
+        public Collision.MapSegment[] PaddleSegments = new Collision.MapSegment[6];
+
         public Vector2 pongPosition;
 
         public Point windowSize;
@@ -70,6 +89,14 @@ namespace myFirstXNAGame
             MapSegments.Add(new Collision.MapSegment(new Point(1, 1), new Point(1, 480)));
             MapSegments.Add(new Collision.MapSegment(new Point(640, 480), new Point(640, 1)));
 
+            for (int i = 0; i < 6; i++)
+            {
+                PaddleSegments[i] = new Collision.MapSegment(new Point(0, 0), new Point(0, 1));
+            }
+
+            scoreLeft = 0;
+            scoreRight = 0;
+
             // TODO: Add your initialization logic here
 
             base.Initialize();
@@ -84,22 +111,41 @@ namespace myFirstXNAGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //texturePlayer = Content.Load<Texture2D>(@"Images\john");
+            texturePlayer = Content.Load<Texture2D>(@"Images\john");
             texturePaddle = Content.Load<Texture2D>(@"Images\paddle");
             texturePong = Content.Load<Texture2D>(@"Images\pong");
             bgTexture = Content.Load<Texture2D>(@"Images\background");
-            font1 = Content.Load<SpriteFont>(@"Fonts\Courier New");
+            buttonTexture = Content.Load<Texture2D>(@"Images\button");
 
-            //player = new Player(new Vector2(100, graphics.PreferredBackBufferHeight - 50), 2, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Q, Keys.E);
-            //player.drawDebug(font1);
-            //player.AddAnimations(texturePlayer);
+            arial = Content.Load<SpriteFont>(@"Fonts\Arial");
+            arialBold = Content.Load<SpriteFont>(@"Fonts\Arial Bold");
+
+            player = new Player(new Vector2(100, graphics.PreferredBackBufferHeight - 50), 2, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Q, Keys.E);
+            player.AddAnimations(texturePlayer);
+
             spriteList.Add(new PaddleLeft(texturePaddle, new Vector2(25, (windowSize.Y - texturePaddle.Height) / 2), this, Keys.W, Keys.S));
-            spriteList.Add(new PaddleRight(texturePaddle, new Vector2((windowSize.X - 75), (windowSize.Y - texturePaddle.Height) / 2), this, Keys.None, Keys.None));
-            spriteList.Add(new Pong(texturePong, new Vector2((windowSize.X - texturePong.Width) / 2, ((windowSize.Y - 100 - texturePong.Height) / 2) + 100), this));
-            label1 = new Label(new Vector2(5, 5), font1, spriteList[2].direction.X.ToString() + " " + spriteList[2].direction.Y.ToString() + " " + spriteList[2].speed.ToString() + " " + spriteList[2].position.X.ToString() + " " + spriteList[2].position.Y.ToString() + " " + (spriteList[1].position.X - spriteList[1].currentAnimation.frameSize.X) + " " + spriteList[1].position.Y + spriteList[1].currentAnimation.frameSize.Y);
 
-            MapSegments.Add(new Collision.MapSegment(new Point((int)spriteList[0].position.X, (int)spriteList[0].position.Y), new Point((int)spriteList[0].currentAnimation.frameSize.X, (int)spriteList[0].currentAnimation.frameSize.Y)));
-            MapSegments.Add(new Collision.MapSegment(new Point((int)spriteList[1].position.X, (int)spriteList[1].position.Y), new Point((int)spriteList[1].currentAnimation.frameSize.X, (int)spriteList[1].currentAnimation.frameSize.Y)));
+            spriteList.Add(new PaddleRight(texturePaddle, new Vector2((windowSize.X - 75), (windowSize.Y - texturePaddle.Height) / 2), this, Keys.None, Keys.None));
+
+            spriteList.Add(new Pong(texturePong, new Vector2((windowSize.X - texturePong.Width) / 2, ((windowSize.Y - 100 - texturePong.Height) / 2) + 100), this));
+
+            debugLabel = new Label(new Vector2(5, 5), arial, 0.5f, spriteList[2].direction.X.ToString() + " " + spriteList[2].direction.Y.ToString() + " " + spriteList[2].speed.ToString() + " " + spriteList[2].position.X.ToString() + " " + spriteList[2].position.Y.ToString() + " " + (spriteList[1].position.X - spriteList[1].currentAnimation.frameSize.X) + " " + spriteList[1].position.Y + spriteList[1].currentAnimation.frameSize.Y);
+
+            score = new Label(new Vector2(((windowSize.X - 50) / 2), 25), arial, 1.0f, scoreLeft.ToString() + "     " + scoreRight.ToString());
+
+            endText = new Label(new Vector2((windowSize.X - 160) / 2, (windowSize.Y - 50) / 2), arial, 1.0f, "");
+
+            resetButton = new Button(new Vector2((windowSize.X - 85) / 2, (windowSize.Y - 23) / 2), arial, 1.0f, "Reset");
+            resetButton.AddAnimations(buttonTexture);
+
+            playButton = new Button(new Vector2((windowSize.X - 85) / 2, 150), arial, 1.0f, "Play");
+            playButton.AddAnimations(buttonTexture);
+
+            optionsButton = new Button(new Vector2((windowSize.X - 85) / 2, 178), arial, 1.0f, "Options");
+            optionsButton.AddAnimations(buttonTexture);
+
+            exitButton = new Button(new Vector2((windowSize.X - 85) / 2, 178 + 23 + 5), arial, 1.0f, "Exit");
+            exitButton.AddAnimations(buttonTexture);
             // TODO: use this.Content to load your game content here
         }
 
@@ -129,13 +175,49 @@ namespace myFirstXNAGame
             {
                 s.Update(gameTime);
             }
-            label1.Update(gameTime, spriteList[2].direction.X.ToString() + " " + spriteList[2].direction.Y.ToString() + " " + spriteList[2].speed.ToString() + " " + spriteList[2].position.X.ToString() + " " + spriteList[2].position.Y.ToString() + " " + MapSegments[6].point1.X + " " + MapSegments[6].point1.Y + " " + MapSegments[6].point2.X + " " + MapSegments[6].point2.Y + " " + MapSegments[7].point1.X + " " + MapSegments[7].point1.Y + " " + MapSegments[7].point2.X + " " + MapSegments[7].point2.Y);
 
-            MapSegments[6] = new Collision.MapSegment(new Point((int)spriteList[0].position.X, (int)spriteList[0].position.Y), new Point((int)spriteList[0].position.X + (int)spriteList[0].currentAnimation.frameSize.X, (int)spriteList[0].position.Y + (int)spriteList[0].currentAnimation.frameSize.Y));
-            MapSegments[7] = new Collision.MapSegment(new Point((int)spriteList[1].position.X, (int)spriteList[1].position.Y), new Point((int)spriteList[1].position.X + (int)spriteList[1].currentAnimation.frameSize.X, (int)spriteList[1].position.Y + (int)spriteList[1].currentAnimation.frameSize.Y));
+            score.Update(gameTime, scoreLeft.ToString() + "     " + scoreRight.ToString());
+
+            debugLabel.Update(gameTime, spriteList[2].direction.X.ToString() + " " + spriteList[2].direction.Y.ToString() + " " + spriteList[2].speed.ToString() + " " + spriteList[2].position.X.ToString() + " " + spriteList[2].position.Y.ToString() + " " + resetButton.position.X.ToString() + " " + resetButton.position.Y.ToString() + " " + resetButton.mX.ToString() + " " + resetButton.mY.ToString());
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+
+            if (gameOver == true)
+            {
+                ableStart = false;
+
+                if (playerWon == true)
+                {
+                    endText.Update(gameTime, "You won!!!");
+                }
+                else
+                {
+                    endText.Update(gameTime, "Player2/CPU Won!!!");
+                }
+            }
+
+            resetButton.Update(gameTime);
+            playButton.Update(gameTime);
+            optionsButton.Update(gameTime);
+            exitButton.Update(gameTime);
+
+            if (resetButton.buttonState.Equals(RELEASED))
+            {
+                Reset();
+            }
+            if (playButton.mPress == true)
+            {
+                menu = 1;
+            }
+            else if (optionsButton.mPress == true)
+            {
+                menu = 0;
+            }
+            if (exitButton.mPress == true)
+            {
+                this.Exit();
+            }
         }
 
         /// <summary>
@@ -147,17 +229,54 @@ namespace myFirstXNAGame
             GraphicsDevice.Clear(new Color(50, 50, 50));
 
             spriteBatch.Begin();
-                spriteBatch.Draw(bgTexture, Vector2.Zero, Color.White);
-
-                foreach (Sprite s in spriteList)
+                if (menu == 0)
                 {
-                    s.Draw(gameTime, spriteBatch);
+                    spriteBatch.Draw(bgTexture, Vector2.Zero, Color.Red);
+
+                    playButton.Draw(gameTime, spriteBatch);
+                    optionsButton.Draw(gameTime, spriteBatch);
+                    exitButton.Draw(gameTime, spriteBatch);
                 }
-                label1.Draw(gameTime, spriteBatch);
+                else if (menu == 1)
+                {
+                    spriteBatch.Draw(bgTexture, Vector2.Zero, Color.White);
+
+                    foreach (Sprite s in spriteList)
+                    {
+                        s.Draw(gameTime, spriteBatch);
+                    }
+                    //label1.Draw(gameTime, spriteBatch);
+                    score.Draw(gameTime, spriteBatch);
+                    if (gameOver == true)
+                    {
+                        endText.Draw(gameTime, spriteBatch);
+                        resetButton.Draw(gameTime, spriteBatch);
+                    }
+                }
+                else if (menu == 2)
+                {
+
+                }
             spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        public void Reset()
+        {
+            gameOver = false;
+            playerWon = false;
+            scoreLeft = 0;
+            scoreRight = 0;
+            spriteList[0].move = false;
+            spriteList[1].move = false;
+            spriteList[1].moveAi = false;
+            spriteList[2].move = false;
+            ableStart = true;
+            spriteList[0].position = new Vector2(25, (windowSize.Y - texturePaddle.Height) / 2);
+            spriteList[1].position = new Vector2((windowSize.X - 75), (windowSize.Y - texturePaddle.Height) / 2);
+            spriteList[2].position = new Vector2((windowSize.X - texturePong.Width) / 2, ((windowSize.Y - 100 - texturePong.Height) / 2) + 100);
         }
     }
 }

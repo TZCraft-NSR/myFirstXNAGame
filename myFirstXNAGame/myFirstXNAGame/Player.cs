@@ -15,7 +15,6 @@ namespace myFirstXNAGame
 {
     class Player : TwoAnimation
     {
-        protected bool move;
         protected Keys up;
         protected Keys down;
         protected Keys left;
@@ -40,11 +39,6 @@ namespace myFirstXNAGame
             this.right = right;
             this.attack = attack;
             this.shoot = shoot;
-        }
-
-        public void drawDebug(SpriteFont texture)
-        {
-            debug = new Label(new Vector2(200, 25), texture, "Position: " + position.Y.ToString());
         }
 
         public override void Update(GameTime gameTime)

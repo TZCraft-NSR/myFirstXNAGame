@@ -19,7 +19,6 @@ namespace myFirstXNAGame
     class Pong : Sprite
     {
         myFirstXNAGame myGame;
-        bool move;
 
         /// <summary>
         /// Creates the Pong from the class.
@@ -43,12 +42,12 @@ namespace myFirstXNAGame
         public override void Update(GameTime gameTime)
         {
             //direction = Collision.unitVector(direction);
-            if (keyboardState.IsKeyDown(Keys.Space) && move == false)
+            if (keyboardState.IsKeyDown(Keys.Space) && move == false && myGame.ableStart == true)
             {
                 move = true;
             }
 
-            if (move == true)
+            if (move == true && myGame.ableStart == true)
             {
                 position.X += direction.X * speed;
                 position.Y += direction.Y * speed;
@@ -57,6 +56,7 @@ namespace myFirstXNAGame
                 {
                     if (collisionRect().Intersects(ms.collisionRect()))
                     {
+                        //direction = Collision.reflectedVector(direction, ms.getVector());
                         direction = Collision.reflectedVector(direction, ms.getVector());
                         speed *= 1.01f;
 
@@ -65,34 +65,51 @@ namespace myFirstXNAGame
                             speed = 25;
                         }
 
+                        if (collisionRect().Intersects(myGame.MapSegments[4].collisionRect()))
+                        {
+                            speed = 0;
+                            myGame.gameOver = true;
+                            myGame.playerWon = false;
+                            move = false;
+                        }
+                        if (collisionRect().Intersects(myGame.MapSegments[5].collisionRect()))
+                        {
+                            speed = 0;
+                            myGame.gameOver = true;
+                            myGame.playerWon = true;
+                            move = false;
+                        }
+
                         position += direction * speed;
                     }
                 }
 
-                if (collisionRect().Intersects(myGame.MapSegments[6].collisionRect()))
+                foreach (Collision.MapSegment ms in myGame.PaddleSegments)
                 {
-                    direction = Collision.reflectedVector(direction, myGame.MapSegments[6].getVector());
-                    speed *= 1.01f;
-
-                    if (speed > 30)
+                    if (collisionRect().Intersects(ms.collisionRect()))
                     {
-                        speed = 25;
+                        //direction = Collision.reflectedVector(direction, ms.getVector());
+                        direction = Collision.reflectedVector(direction, ms.getVector());
+                        speed *= 1.01f;
+
+                        if (speed > 30)
+                        {
+                            speed = 25;
+                        }
+
+                        if (collisionRect().Intersects(myGame.PaddleSegments[0].collisionRect()) || collisionRect().Intersects(myGame.PaddleSegments[1].collisionRect()) || collisionRect().Intersects(myGame.PaddleSegments[2].collisionRect()))
+                        {
+                            myGame.scoreLeft += 1;
+                        }
+                        if (collisionRect().Intersects(myGame.PaddleSegments[3].collisionRect()) || collisionRect().Intersects(myGame.PaddleSegments[4].collisionRect()) || collisionRect().Intersects(myGame.PaddleSegments[5].collisionRect()))
+                        {
+                            myGame.scoreRight += 1;
+                        }
+
+                        position += direction * speed;
+
+
                     }
-
-                    position += direction * speed;
-                }
-
-                if (collisionRect().Intersects(myGame.MapSegments[7].collisionRect()))
-                {
-                    direction = Collision.reflectedVector(direction, myGame.MapSegments[7].getVector());
-                    speed *= 1.01f;
-
-                    if (speed > 30)
-                    {
-                        speed = 25;
-                    }
-
-                    position += direction * speed;
                 }
 
                 myGame.pongPosition = position;

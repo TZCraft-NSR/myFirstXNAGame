@@ -15,7 +15,6 @@ namespace myFirstXNAGame
 {
     public class PaddleLeft : Sprite
     {
-        protected bool move;
         protected Keys up;
         protected Keys down;
 
@@ -34,7 +33,7 @@ namespace myFirstXNAGame
                 move = true;
             }
 
-            speed = 2;
+            speed = 3;
 
             this.up = up;
             this.down = down;
@@ -48,7 +47,12 @@ namespace myFirstXNAGame
 
         public override void Update(GameTime gameTime)
         {
-            if (move == true)
+            if (keyboardState.IsKeyDown(Keys.Space) && move == false && myGame.ableStart == true)
+            {
+                move = true;
+            }
+
+            if (move == true && myGame.ableStart == true)
             {
                 if (keyboardState.IsKeyDown(up))
                 {
@@ -68,6 +72,10 @@ namespace myFirstXNAGame
             {
                 position.Y = myGame.windowSize.Y - currentAnimation.frameSize.Y;
             }
+
+            myGame.PaddleSegments[0] = new Collision.MapSegment(new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
+            myGame.PaddleSegments[1] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y));
+            myGame.PaddleSegments[2] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
 
             base.Update(gameTime);
         }

@@ -15,8 +15,6 @@ namespace myFirstXNAGame
 {
     public class PaddleRight : Sprite
     {
-        protected bool move;
-        protected bool moveAi;
         protected Keys up;
         protected Keys down;
 
@@ -28,14 +26,14 @@ namespace myFirstXNAGame
 
             if (up == Keys.None && up == Keys.None)
             {
-                move = false;
+                playerVsAi = false;
             }
             else
             {
-                move = true;
+                playerVsAi = true;
             }
 
-            speed = 2;
+            speed = 3;
 
             this.up = up;
             this.down = down;
@@ -47,42 +45,49 @@ namespace myFirstXNAGame
 
         public override void Update(GameTime gameTime)
         {
-            if (move == true)
+            if (keyboardState.IsKeyDown(Keys.Space) && moveAi == false && move == false && myGame.ableStart == true)
+            {
+                if (playerVsAi == true)
+                {
+                    move = true;
+                    moveAi = false;
+                }
+                else
+                {
+                    moveAi = true;
+                    move = false;
+                }
+            }
+
+            if (move == true && myGame.ableStart == true)
             {
                 if (keyboardState.IsKeyDown(up))
                 {
-                    position.Y -= speed;
+                    direction.Y = -1;
                 }
                 if (keyboardState.IsKeyDown(down))
                 {
-                    position.Y += speed;
+                    direction.Y = 1;
                 }
             }
-            else
+
+            if (moveAi == true && myGame.ableStart == true)
             {
-                if (keyboardState.IsKeyDown(Keys.Space) && moveAi == false)
+                if (myGame.pongPosition.Y + 20 < position.Y + 50)
                 {
-                    moveAi = true;
+                    direction.Y = -1;
                 }
-
-                if (moveAi == true)
+                else if (myGame.pongPosition.Y + 20 > position.Y + 50)
                 {
-                    if (myGame.pongPosition.Y + 20 < position.Y + 50)
-                    {
-                        direction.Y = -1;
-                    }
-                    else if (myGame.pongPosition.Y + 20 > position.Y + 50)
-                    {
-                        direction.Y = 1;
-                    }
-                    else
-                    {
-                        position.Y = 0;
-                    }
+                    direction.Y = 1;
                 }
-
-                position += direction * speed;
+                else
+                {
+                    position.Y = 0;
+                }
             }
+
+            position += direction * speed;
 
             if (position.Y < 100)
             {
@@ -92,6 +97,10 @@ namespace myFirstXNAGame
             {
                 position.Y = myGame.windowSize.Y - currentAnimation.frameSize.Y;
             }
+
+            myGame.PaddleSegments[3] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y));
+            myGame.PaddleSegments[5] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y));
+            myGame.PaddleSegments[4] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
 
             base.Update(gameTime);
         }
