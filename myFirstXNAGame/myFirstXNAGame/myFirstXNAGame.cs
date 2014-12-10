@@ -202,19 +202,20 @@ namespace myFirstXNAGame
             optionsButton.Update(gameTime);
             exitButton.Update(gameTime);
 
-            if (resetButton.buttonState.Equals(RELEASED))
+            if (resetButton.Clicked())
             {
                 Reset();
             }
-            if (playButton.mPress == true)
+
+            if (playButton.Clicked())
             {
                 menu = 1;
             }
-            else if (optionsButton.mPress == true)
+            else if (optionsButton.Clicked())
             {
                 menu = 0;
             }
-            if (exitButton.mPress == true)
+            if (exitButton.Clicked())
             {
                 this.Exit();
             }
