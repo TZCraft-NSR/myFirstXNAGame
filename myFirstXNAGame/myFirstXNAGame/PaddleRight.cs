@@ -13,24 +13,24 @@ using VoidEngine;
 
 namespace myFirstXNAGame
 {
-    public class PaddleRight : Sprite
+    public class PaddleLeft : Sprite
     {
         protected Keys up;
         protected Keys down;
 
         protected myFirstXNAGame myGame;
 
-        public PaddleRight(Texture2D texture, Vector2 position, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
+        public PaddleLeft(Texture2D texture, Vector2 position, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
         {
             AddAnimations(texture);
 
             if (up == Keys.None && up == Keys.None)
             {
-                playerVsAi = false;
+                move = false;
             }
             else
             {
-                playerVsAi = true;
+                move = true;
             }
 
             speed = 3;
@@ -38,56 +38,31 @@ namespace myFirstXNAGame
             this.up = up;
             this.down = down;
 
+            this.position = position;
             this.myGame = myGame;
 
-            direction = Vector2.Zero;
+            direction.X = (0);
+            direction.Y = (0);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (keyboardState.IsKeyDown(Keys.Space) && moveAi == false && move == false && myGame.ableStart == true)
+            if (keyboardState.IsKeyDown(Keys.Space) && move == false && myGame.ableStart == true)
             {
-                if (playerVsAi == true)
-                {
-                    move = true;
-                    moveAi = false;
-                }
-                else
-                {
-                    moveAi = true;
-                    move = false;
-                }
+                move = true;
             }
 
             if (move == true && myGame.ableStart == true)
             {
                 if (keyboardState.IsKeyDown(up))
                 {
-                    direction.Y = -1;
+                    position.Y -= speed;
                 }
                 if (keyboardState.IsKeyDown(down))
                 {
-                    direction.Y = 1;
+                    position.Y += speed;
                 }
             }
-
-            if (moveAi == true && myGame.ableStart == true)
-            {
-                if (myGame.pongPosition.Y + 20 < position.Y + 50)
-                {
-                    direction.Y = -1;
-                }
-                else if (myGame.pongPosition.Y + 20 > position.Y + 50)
-                {
-                    direction.Y = 1;
-                }
-                else
-                {
-                    position.Y = 0;
-                }
-            }
-
-            position += direction * speed;
 
             if (position.Y < 100)
             {
@@ -98,9 +73,9 @@ namespace myFirstXNAGame
                 position.Y = myGame.windowSize.Y - currentAnimation.frameSize.Y;
             }
 
-            myGame.PaddleSegments[3] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y));
-            myGame.PaddleSegments[5] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y));
-            myGame.PaddleSegments[4] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
+            myGame.PaddleSegments[0] = new Collision.MapSegment(new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
+            myGame.PaddleSegments[1] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y));
+            myGame.PaddleSegments[2] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
 
             base.Update(gameTime);
         }

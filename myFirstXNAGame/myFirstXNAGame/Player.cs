@@ -24,7 +24,6 @@ namespace myFirstXNAGame
         protected Vector2 vi = new Vector2(0, 0);
         protected bool IsJumping;
         protected readonly Vector2 g = new Vector2(0, -9.8f);
-        public Label debug;
 
         public Player(Vector2 position, int speed, Keys up, Keys down, Keys left, Keys right, Keys attack, Keys shoot) : base(position)
         {
@@ -148,14 +147,11 @@ namespace myFirstXNAGame
                 SetAnimation("IDLE");
             }
 
-            debug.Update(gameTime, "Position: " + position.Y.ToString() + " Vi: " + vi.Y.ToString());
-
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            debug.Draw(gameTime, spriteBatch);
             base.Draw(gameTime, spriteBatch);
         }
 

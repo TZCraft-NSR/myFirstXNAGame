@@ -10,7 +10,7 @@ namespace myFirstXNAGame
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (myFirstXNAGame game = new myFirstXNAGame())
             {
                 game.Run();
             }
@@ -18,4 +18,3 @@ namespace myFirstXNAGame
     }
 #endif
 }
-

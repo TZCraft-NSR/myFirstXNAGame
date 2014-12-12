@@ -41,7 +41,6 @@ namespace myFirstXNAGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            //direction = Collision.unitVector(direction);
             if (keyboardState.IsKeyDown(Keys.Space) && move == false && myGame.ableStart == true)
             {
                 move = true;
@@ -56,7 +55,6 @@ namespace myFirstXNAGame
                 {
                     if (collisionRect().Intersects(ms.collisionRect()))
                     {
-                        //direction = Collision.reflectedVector(direction, ms.getVector());
                         direction = Collision.reflectedVector(direction, ms.getVector());
                         speed *= 1.01f;
 
@@ -88,7 +86,6 @@ namespace myFirstXNAGame
                 {
                     if (collisionRect().Intersects(ms.collisionRect()))
                     {
-                        //direction = Collision.reflectedVector(direction, ms.getVector());
                         direction = Collision.reflectedVector(direction, ms.getVector());
                         speed *= 1.01f;
 
@@ -107,8 +104,6 @@ namespace myFirstXNAGame
                         }
 
                         position += direction * speed;
-
-
                     }
                 }
 
