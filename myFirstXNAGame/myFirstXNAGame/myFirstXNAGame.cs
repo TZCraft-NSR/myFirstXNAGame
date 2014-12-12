@@ -229,7 +229,7 @@ namespace myFirstXNAGame
         {
             GraphicsDevice.Clear(new Color(50, 50, 50));
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(0, BlendState.Opaque));
                 if (menu == 0)
                 {
                     spriteBatch.Draw(bgTexture, Vector2.Zero, Color.Red);
@@ -259,6 +259,8 @@ namespace myFirstXNAGame
 
                 }
             spriteBatch.End();
+
+            device.DepthStencilState = DepthStencilState.Default;
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
