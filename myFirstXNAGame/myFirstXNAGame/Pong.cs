@@ -19,16 +19,17 @@ namespace myFirstXNAGame
     class Pong : Sprite
     {
         myFirstXNAGame myGame;
-
+        public Color color;
         /// <summary>
         /// Creates the Pong from the class.
         /// </summary>
         /// <param name="position">The position of the pong</param>
-        public Pong(Texture2D texture, Vector2 position, myFirstXNAGame myGame) : base(position)
+        public Pong(Texture2D texture, Vector2 position, Color color, myFirstXNAGame myGame) : base(position)
         {
             AddAnimations(texture);
             speed = 3;
             this.myGame = myGame;
+            this.color = color;
 
             direction.X = (2 * (float)myGame.rng.NextDouble() - 1);
             direction.Y = (2 * (float)myGame.rng.NextDouble() - 1);
@@ -41,12 +42,12 @@ namespace myFirstXNAGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if (keyboardState.IsKeyDown(Keys.Space) && move == false && myGame.ableStart == true)
+            if (keyboardState.IsKeyDown(Keys.Space) && myGame.menu == 1 && move == false && myGame.ableStart == true)
             {
                 move = true;
             }
 
-            if (move == true && myGame.ableStart == true)
+            if (move == true)
             {
                 position.X += direction.X * speed;
                 position.Y += direction.Y * speed;
@@ -63,19 +64,44 @@ namespace myFirstXNAGame
                             speed = 25;
                         }
 
-                        if (collisionRect().Intersects(myGame.MapSegments[4].collisionRect()))
+                        if (!dummy)
                         {
-                            speed = 0;
-                            myGame.gameOver = true;
-                            myGame.playerWon = false;
-                            move = false;
+                            if (collisionRect().Intersects(myGame.MapSegments[4].collisionRect()))
+                            {
+                                speed = 0;
+                                myGame.gameOver = true;
+                                myGame.playerWon = false;
+                                move = false;
+                            }
+                            if (collisionRect().Intersects(myGame.MapSegments[5].collisionRect()))
+                            {
+                                speed = 0;
+                                myGame.gameOver = true;
+                                myGame.playerWon = true;
+                                move = false;
+                            }
                         }
-                        if (collisionRect().Intersects(myGame.MapSegments[5].collisionRect()))
+
+                        if (dummy)
                         {
-                            speed = 0;
-                            myGame.gameOver = true;
-                            myGame.playerWon = true;
-                            move = false;
+                            if (collisionRect().Intersects(myGame.MapSegments[4].collisionRect()))
+                            {
+                                position = myGame.pongDefaultposition;
+
+                                direction.X = (2 * (float)myGame.rng.NextDouble() - 1);
+                                direction.Y = (2 * (float)myGame.rng.NextDouble() - 1);
+
+                                speed = 3;
+                            }
+                            if (collisionRect().Intersects(myGame.MapSegments[5].collisionRect()))
+                            {
+                                position = myGame.pongDefaultposition;
+
+                                direction.X = (2 * (float)myGame.rng.NextDouble() - 1);
+                                direction.Y = (2 * (float)myGame.rng.NextDouble() - 1);
+
+                                speed = 3;
+                            }
                         }
 
                         position += direction * speed;
@@ -94,23 +120,38 @@ namespace myFirstXNAGame
                             speed = 25;
                         }
 
-                        if (collisionRect().Intersects(myGame.PaddleSegments[0].collisionRect()) || collisionRect().Intersects(myGame.PaddleSegments[1].collisionRect()) || collisionRect().Intersects(myGame.PaddleSegments[2].collisionRect()))
+                        if (!dummy && !myGame.gameOver)
                         {
-                            myGame.scoreLeft += 1;
-                        }
-                        if (collisionRect().Intersects(myGame.PaddleSegments[3].collisionRect()) || collisionRect().Intersects(myGame.PaddleSegments[4].collisionRect()) || collisionRect().Intersects(myGame.PaddleSegments[5].collisionRect()))
-                        {
-                            myGame.scoreRight += 1;
+                            if (collisionRect().Intersects(myGame.PaddleSegments[0].collisionRect()))
+                            {
+                                myGame.scoreLeft += 1;
+                            }
+                            if (collisionRect().Intersects(myGame.PaddleSegments[3].collisionRect()))
+                            {
+                                myGame.scoreRight += 1;
+                            }
                         }
 
                         position += direction * speed;
                     }
                 }
+            }
 
-                myGame.pongPosition = position;
+            if (!dummy)
+            {
+                myGame.pongposition = position;
+            }
+            else
+            {
+                myGame.dummyPongposition = position;
             }
 
             base.Update(gameTime);
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(currentAnimation.texture, position, new Rectangle(currentAnimation.startPos.X + (currentFrame.X * currentAnimation.frameSize.X), currentAnimation.startPos.Y + (currentFrame.Y * currentAnimation.frameSize.Y), currentAnimation.frameSize.X, currentAnimation.frameSize.Y), color);
         }
 
         public override void AddAnimations(Texture2D texture)

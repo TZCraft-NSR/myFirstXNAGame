@@ -13,46 +13,46 @@ using VoidEngine;
 
 namespace myFirstXNAGame
 {
-    public class PaddleLeft : Sprite
+    public class PaddleRight : Sprite
     {
         protected Keys up;
         protected Keys down;
+        public Color color;
 
         protected myFirstXNAGame myGame;
 
-        public PaddleLeft(Texture2D texture, Vector2 position, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
+        public PaddleRight(Texture2D texture, Vector2 position, Color color, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
         {
             AddAnimations(texture);
 
             if (up == Keys.None && up == Keys.None)
             {
-                move = false;
+                ai = true;
             }
             else
             {
-                move = true;
+                ai = false;
             }
 
             speed = 3;
+            direction = Vector2.Zero;
 
             this.up = up;
             this.down = down;
-
             this.position = position;
             this.myGame = myGame;
-
-            direction.X = (0);
-            direction.Y = (0);
+            this.color = color;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (keyboardState.IsKeyDown(Keys.Space) && move == false && myGame.ableStart == true)
+            if (keyboardState.IsKeyDown(Keys.Space) && !dummy && move == false && myGame.ableStart == true)
             {
                 move = true;
+                myGame.isStarted = true;
             }
 
-            if (move == true && myGame.ableStart == true)
+            if (ai == false && move == true && !dummy && !myGame.gameOver)
             {
                 if (keyboardState.IsKeyDown(up))
                 {
@@ -64,6 +64,32 @@ namespace myFirstXNAGame
                 }
             }
 
+            if (ai == true && move == true && !dummy && !myGame.gameOver)
+            {
+                if (myGame.pongposition.Y + 20 < position.Y + 50)
+                {
+                    position.Y -= speed;
+                }
+                if (myGame.pongposition.Y + 20 > position.Y + 50)
+                {
+                    position.Y += speed;
+                }
+            }
+
+            if (dummy)
+            {
+                if (myGame.dummyPongposition.Y + 20 < position.Y + 50)
+                {
+                    position.Y -= speed;
+                }
+                if (myGame.dummyPongposition.Y + 20 > position.Y + 50)
+                {
+                    position.Y += speed;
+                }
+            }
+
+            //position += direction * speed;
+
             if (position.Y < 100)
             {
                 position.Y = 100;
@@ -73,16 +99,16 @@ namespace myFirstXNAGame
                 position.Y = myGame.windowSize.Y - currentAnimation.frameSize.Y;
             }
 
-            myGame.PaddleSegments[0] = new Collision.MapSegment(new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
-            myGame.PaddleSegments[1] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y));
-            myGame.PaddleSegments[2] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
+            myGame.PaddleSegments[3] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y));
+            myGame.PaddleSegments[4] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y));
+            myGame.PaddleSegments[5] = new Collision.MapSegment(new Point((int)position.X, (int)position.Y + currentAnimation.frameSize.Y), new Point((int)position.X + currentAnimation.frameSize.X, (int)position.Y + currentAnimation.frameSize.Y));
 
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch);
+            spriteBatch.Draw(currentAnimation.texture, position, new Rectangle(currentAnimation.startPos.X + (currentFrame.X * currentAnimation.frameSize.X), currentAnimation.startPos.Y + (currentFrame.Y * currentAnimation.frameSize.Y), currentAnimation.frameSize.X, currentAnimation.frameSize.Y), color);
         }
 
         public override void AddAnimations(Texture2D texture)

@@ -13,7 +13,7 @@ using VoidEngine;
 
 namespace myFirstXNAGame
 {
-    class Player : TwoAnimation
+    class Player : Sprite
     {
         protected Keys up;
         protected Keys down;
@@ -155,15 +155,29 @@ namespace myFirstXNAGame
             base.Draw(gameTime, spriteBatch);
         }
 
-        public override void AddAnimations(Texture2D texture)
+        public void addAnimations(List<String> animationName, List<Texture2D> textureList, List<Point> textureSize, List<Point> sheetCords, List<Point> frameCords, List<Int32> fps, string defaultAnimation)
         {
-            Addanimation("IDLE", texture, new Point(60, 50), new Point(1, 1), new Point(0, 0), 40);
-            Addanimation("WALK", texture, new Point(60, 50), new Point(4, 3), new Point(0, 0), 40);
-            Addanimation("BLOCK", texture, new Point(60, 50), new Point(2, 2), new Point(180, 200), 100);
-            Addanimation("SHOOT", texture, new Point(60, 50), new Point(1, 3), new Point(240, 0), 60);
-            Addanimation("JUMP", texture, new Point(60, 50), new Point(5, 1), new Point(0, 150), 60);
-            Addanimation("SWING", texture, new Point(60, 50), new Point(3, 2), new Point(0, 200), 70);
-            SetAnimation("IDLE");
+            foreach (String aN in animationName)
+            {
+                foreach (Texture2D tL in textureList)
+                {
+                    foreach (Point tS in textureSize)
+                    {
+                        foreach (Point sC in sheetCords)
+                        {
+                            foreach (Point fC in frameCords)
+                            {
+                                foreach (Int32 f in fps)
+                                {
+                                    Addanimation(aN, tL, tS, sC, fC, f);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            SetAnimation(defaultAnimation);
         }
     }
 }

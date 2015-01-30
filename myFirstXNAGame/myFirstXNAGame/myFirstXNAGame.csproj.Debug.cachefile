@@ -1,7 +1,17 @@
 Content\Images\grump.xnb
 Content\Images\player.xnb
 Content\Images\john.xnb
-Content\Images\paddle.xnb
+Content\Images\paddleRight.xnb
 Content\Images\paddleAnim.xnb
 Content\Images\pong.xnb
 Content\Images\pongAnim.xnb
+Content\Images\button.xnb
+Content\Images\background.xnb
+Content\Images\paddleLeft.xnb
+Content\Fonts\Arial Bold.xnb
+Content\Fonts\Arial.xnb
+Content\Effect\BloomCombine.xnb
+Content\Effect\BloomExtract.xnb
+Content\Effect\GaussianBlur.xnb
+Content\Images\paddleWash.xnb
+Content\Images\box.xnb

@@ -17,42 +17,42 @@ namespace myFirstXNAGame
     {
         protected Keys up;
         protected Keys down;
+        public Color color;
 
         protected myFirstXNAGame myGame;
 
-        public PaddleLeft(Texture2D texture, Vector2 position, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
+        public PaddleLeft(Texture2D texture, Vector2 position, Color color, myFirstXNAGame myGame, Keys up, Keys down) : base(position)
         {
             AddAnimations(texture);
 
             if (up == Keys.None && up == Keys.None)
             {
-                move = false;
+                ai = true;
             }
             else
             {
-                move = true;
+                ai = false;
             }
 
             speed = 3;
+            direction = Vector2.Zero;
 
             this.up = up;
             this.down = down;
-
             this.position = position;
             this.myGame = myGame;
-
-            direction.X = (0);
-            direction.Y = (0);
+            this.color = color;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (keyboardState.IsKeyDown(Keys.Space) && move == false && myGame.ableStart == true)
+            if (keyboardState.IsKeyDown(Keys.Space) && !dummy && move == false && myGame.ableStart == true)
             {
                 move = true;
+                myGame.isStarted = true;
             }
 
-            if (move == true && myGame.ableStart == true)
+            if (ai == false && move == true && !dummy && !myGame.gameOver)
             {
                 if (keyboardState.IsKeyDown(up))
                 {
@@ -63,6 +63,32 @@ namespace myFirstXNAGame
                     position.Y += speed;
                 }
             }
+
+            if (ai == true && move == true && !dummy && !myGame.gameOver)
+            {
+                if (myGame.pongposition.Y + 20 < position.Y + 50)
+                {
+                    position.Y -= speed;
+                }
+                if (myGame.pongposition.Y + 20 > position.Y + 50)
+                {
+                    position.Y += speed;
+                }
+            }
+
+            if (dummy)
+            {
+                if (myGame.dummyPongposition.Y + 20 < position.Y + 50)
+                {
+                    position.Y -= speed;
+                }
+                if (myGame.dummyPongposition.Y + 20 > position.Y + 50)
+                {
+                    position.Y += speed;
+                }
+            }
+
+            //position += direction * speed;
 
             if (position.Y < 100)
             {
@@ -82,7 +108,7 @@ namespace myFirstXNAGame
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch);
+            spriteBatch.Draw(currentAnimation.texture, position, new Rectangle(currentAnimation.startPos.X + (currentFrame.X * currentAnimation.frameSize.X), currentAnimation.startPos.Y + (currentFrame.Y * currentAnimation.frameSize.Y), currentAnimation.frameSize.X, currentAnimation.frameSize.Y), color);
         }
 
         public override void AddAnimations(Texture2D texture)
