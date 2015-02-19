@@ -13,7 +13,7 @@ using VoidEngine;
 
 namespace myFirstXNAGame
 {
-    class Player : Sprite
+    public class Player : Sprite
     {
         protected Keys up;
         protected Keys down;
