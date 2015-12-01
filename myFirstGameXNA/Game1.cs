@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace myFirstXNAGame
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+	/// <summary>
+	/// This is the main type for your game
+	/// </summary>
+	public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -93,7 +86,7 @@ namespace myFirstXNAGame
 
             spriteBatch.Begin();
                 sprite1.Draw(gameTime, spriteBatch);
-                // This is an old fuction.
+                // This is an old function.
                 //spriteBatch.Draw(texture, new Vector2(50, 50), Color.White);
             spriteBatch.End();
             // TODO: Add your drawing code here

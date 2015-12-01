@@ -23,7 +23,7 @@ float4 AdjustSaturation(float4 color, float saturation)
 }
 
 
-float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
+float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR
 {
     // Look up the bloom and original base image colors.
     float4 bloom = tex2D(BloomSampler, texCoord);
@@ -46,6 +46,6 @@ technique BloomCombine
 {
     pass Pass1
     {
-        PixelShader = compile ps_2_0 PixelShaderFunction();
+        PixelShader = compile ps_4_0_level_9_1 PixelShaderFunction();
     }
 }
